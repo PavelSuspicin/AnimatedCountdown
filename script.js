@@ -1,40 +1,39 @@
 const counter = document.querySelector('.counter')
 const numbers = document.querySelectorAll('.numbers span')
-const finalMassage = document.querySelector('.final')
-const replay = document.querySelector('#replay')
+const finalMessage = document.querySelector('.final')
+const replayBtn = document.querySelector('#replay')
 
 runAnimation()
 
 function runAnimation() {
     numbers.forEach((number, ind) => {
-        const lastNumber = numbers.length - 1
+        const amount = numbers.length - 1
 
-        number.addEventListener('animationend', (e) => {
-            if (e.animationName === 'goIn' && ind !== lastNumber) {
+        number.addEventListener('animationend', (event) => {
+            if (event.animationName === 'goIn' && ind !== amount) {
                 number.classList.remove('in')
                 number.classList.add('out')
-            } else if (e.animationName === 'goOut' && number.nextElementSibling) {
+            } else if (event.animationName === 'goOut' && number.nextElementSibling) {
                 number.nextElementSibling.classList.add('in')
             } else {
+                finalMessage.classList.add('show')
                 counter.classList.add('hide')
-                finalMassage.classList.add('show')
             }
         })
     })
 }
 
-function resetDOM() {
+function reset() {
+    finalMessage.classList.remove('show')
     counter.classList.remove('hide')
-    finalMassage.classList.remove('show')
 
     numbers.forEach((number) => {
         number.classList.value = ''
     })
-
     numbers[0].classList.add('in')
 }
 
-replay.addEventListener('click', () => {
-    resetDOM()
+replayBtn.addEventListener('click', () => {
+    reset()
     runAnimation()
 })
